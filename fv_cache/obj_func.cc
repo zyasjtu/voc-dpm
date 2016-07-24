@@ -51,7 +51,9 @@ void obj_val(double out[OBJ_VAL_LEN], ex_cache &E, model &M) {
     out[OBJ_VAL_RG] *= 0.5;
   } else if (M.reg_type == model::REG_MAX) {
     // Compute softmax regularization cost
-    double hnrms2[M.num_components];
+//    double hnrms2[M.num_components];
+    double *hnrms2 = new double[M.num_components];
+
     double max_hnrm2 = -INFINITY;
     for (int c = 0; c < M.num_components; c++) {
       if (M.component_sizes[c] == 0)
@@ -84,6 +86,8 @@ void obj_val(double out[OBJ_VAL_LEN], ex_cache &E, model &M) {
     }
 
     out[OBJ_VAL_RG] = max_hnrm2 + inv_beta * log(Z);
+
+    delete []hnrms2; hnrms2 = NULL;
   }
 
   for (ex_iter i = E.begin(), i_end = E.end(); i != i_end; ++i) {
@@ -275,7 +279,9 @@ void gradient(double *obj_val_out, double *grad, const int dim,
     // Cost and gradient of the softmax regularization term
     double **w = M.w;
 
-    double hnrms2[M.num_components];
+//    double hnrms2[M.num_components];
+    double *hnrms2 = new double[M.num_components];
+
     double max_hnrm2 = -INFINITY;
     for (int c = 0; c < M.num_components; c++) {
       if (M.component_sizes[c] == 0)
@@ -298,7 +304,9 @@ void gradient(double *obj_val_out, double *grad, const int dim,
         max_hnrm2 = val;
     }
     
-    double pc[M.num_components];
+//    double pc[M.num_components];
+    double *pc = new double[M.num_components];
+
     double Z = 0;
     for (int c = 0; c < M.num_components; c++) {
       if (M.component_sizes[c] == 0)
@@ -327,6 +335,9 @@ void gradient(double *obj_val_out, double *grad, const int dim,
             *(ptr_grad++) += wb[k] * reg_mult * cmult;
       }
     }
+
+    delete []hnrms2; hnrms2 = NULL;
+    delete []pc; pc = NULL;
   }
 
   for (int t = 0; t < num_threads; t++) {

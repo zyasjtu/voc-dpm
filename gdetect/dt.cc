@@ -24,6 +24,9 @@
  * a row or column of an array.  
  */
 
+ typedef int int32_t;
+ #define INFINITY INT_MAX
+
 static inline int square(int x) { return x*x; }
 
 // dt helper function

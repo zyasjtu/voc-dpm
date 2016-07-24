@@ -33,6 +33,9 @@ using namespace std;
 // were taken from Charles Dubout's ffld code (http://www.idiap.ch/~cdubout/
 // code/ffld.tar.gz).
 
+typedef int int32_t;
+#define INFINITY INT_MAX
+
 static double eps = 0.00001;
 
 static inline int square(int x) { return x*x; }

@@ -18,6 +18,8 @@
 
 using namespace std;
 
+#define INFINITY INT_MAX
+
 // timers
 static timer *searchtimer;
 static timer *inittimer;

@@ -15,6 +15,8 @@
 #include <math.h>
 #include "mex.h"
 
+#define bzero(a, b) memset(a, 0, b);
+
 // small value, used to avoid division by zero
 #define eps 0.0001
 

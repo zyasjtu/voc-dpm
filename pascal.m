@@ -55,7 +55,7 @@ if nargin < 5
 end
 
 % Record a log of the training and test procedure
-diary(conf.training.log([cls '-' timestamp]));
+%diary(conf.training.log([cls '-' timestamp]));
 
 % Train a model (and record how long it took)
 th = tic;

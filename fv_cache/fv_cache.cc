@@ -57,7 +57,7 @@ struct context {
   bool cache_is_built;
   bool cleanup_reg;
   bool is_initialized;
-  struct sigaction act, matlab_act;
+//  struct sigaction act, matlab_act;
 
   context() {
     byte_size       = 0;
@@ -80,7 +80,7 @@ static context gctx;
 void checker(bool e, const string file, int line, const string msg) {
   if (!e) {
     mexUnlock();
-    sigaction(SIGINT, &gctx.matlab_act, &gctx.act);
+//    sigaction(SIGINT, &gctx.matlab_act, &gctx.act);
     ostringstream out;
     out << file.c_str() << ":" << line << " " << msg.c_str();
     mexErrMsgTxt(out.str().c_str());
@@ -814,10 +814,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
   { // Set up SIGINT (Ctrl-C) handler
     INTERRUPTED = false;
-    sigemptyset(&gctx.act.sa_mask);
-    gctx.act.sa_handler = sigproc_ctrl_c;
-    gctx.act.sa_flags   = 0;
-    sigaction(SIGINT, &gctx.act, &gctx.matlab_act);
+//    sigemptyset(&gctx.act.sa_mask);
+//    gctx.act.sa_handler = sigproc_ctrl_c;
+//    gctx.act.sa_flags   = 0;
+//    sigaction(SIGINT, &gctx.act, &gctx.matlab_act);
   }
 
   { // Handle input command
@@ -830,6 +830,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
   }
 
   // Put the default matlab handler back
-  sigaction(SIGINT, &gctx.matlab_act, &gctx.act);
+//  sigaction(SIGINT, &gctx.matlab_act, &gctx.act);
   INTERRUPTED = false;
 }

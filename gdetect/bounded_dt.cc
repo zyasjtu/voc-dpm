@@ -15,6 +15,9 @@
 #include <sys/types.h>
 #include <omp.h>
 
+typedef int int32_t;
+#define INFINITY INT_MAX
+
 static inline int min(int a, int b) { return a <= b ? a : b; }
 static inline int max(int a, int b) { return a >= b ? a : b; }
 static inline int square(int x) { return x*x; }

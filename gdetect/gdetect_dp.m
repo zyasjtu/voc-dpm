@@ -193,14 +193,14 @@ for level = 1:length(pyra.feat)
   % Try to use an unrolled SSE routine if available
   % 4 floats are processed at a time, so round the feature dim
   % up to the next largest multiple of 4
-  fconv_num = 4*ceil(size(pyra.feat{level},3)/4);
-  fconv_name = ['fconv_' num2str(fconv_num)];
-  if exist(fconv_name) == 3  % 3 ==> MEX function
-    fconv_fun = str2func(fconv_name);
-  else
-    % Fall back to the slower version that works with any dimension
+%  fconv_num = 4*ceil(size(pyra.feat{level},3)/4);
+%  fconv_name = ['fconv_' num2str(fconv_num)];
+%  if exist(fconv_name) == 3  % 3 ==> MEX function
+%    fconv_fun = str2func(fconv_name);
+%  else
+%    % Fall back to the slower version that works with any dimension
     fconv_fun = @fconv_var_dim;
-  end
+%  end
   % compute filter response for all filters at this level
   r = fconv_fun(pyra.feat{level}, filters, 1, length(filters));
 

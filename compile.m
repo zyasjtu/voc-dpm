@@ -22,9 +22,9 @@ function compile(opt, verb, mex_file)
 % your project.
 % -------------------------------------------------------
 
-if ispc
-  error('This code is not supported on Windows.');
-end
+%if ispc
+%  error('This code is not supported on Windows.');
+%end
 
 startup;
 
@@ -36,6 +36,7 @@ if nargin < 2
   verb = false;
 end
 
+try
 if nargin < 3
   % Build feature vector cache code
   fv_compile(opt, verb);
@@ -62,12 +63,12 @@ if nargin < 3
   % from 4 to 100
   % for i = 4:4:100
   %for i = [8 32]
-  for i = [32]
-    fprintf('Building convolution routine for %d features\n', i);
-    extra_cxx_flags = sprintf('-Iexternal -DMETA_NUM_FEATURES=%d', i/4);
-    eval([mexcmd(opt, verb, extra_cxx_flags) ...
-        ' gdetect/fconv_sse_meta.cc -output fconv_' num2str(i)]);
-  end
+%  for i = [32]
+%    fprintf('Building convolution routine for %d features\n', i);
+%    extra_cxx_flags = sprintf('-Iexternal -DMETA_NUM_FEATURES=%d', i/4);
+%    eval([mexcmd(opt, verb, extra_cxx_flags) ...
+%        ' gdetect/fconv_sse_meta.cc -output fconv_' num2str(i)]);
+%  end
   % 1) multithreaded convolution using SSE (OpenMP)
   %eval([mexcmd(opt, verb) ' gdetect/fconv_sse_omp.cc -output fconv']);
   % 2) multithreaded convolution
@@ -77,13 +78,18 @@ if nargin < 3
 
   % Convolution routine that can handle feature dimenions other than 32
   % 0) multithreaded convolution
-  eval([mexcmd(opt, verb) ' gdetect/fconv_var_dim_MT.cc -output fconv_var_dim']);
+%  eval([mexcmd(opt, verb) ' gdetect/fconv_var_dim_MT.cc -output fconv_var_dim']);
   % 1) single-threaded convolution
   % eval([mexcmd(opt, verb) ' gdetect/fconv_var_dim.cc -output fconv_var_dim']);
 
   eval([mexcmd(opt, verb) ' external/minConf/minFunc/lbfgsC.c']);
+
+  eval([mexcmd(opt, verb) ' gdetect/fconv_var_dim.cc']);
 else
   eval([mexcmd(opt, verb) ' ' mex_file]);
+end
+catch e
+warning(e.identifier, 'compile');
 end
 
 rehash path;

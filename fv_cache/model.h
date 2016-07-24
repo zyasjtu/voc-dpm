@@ -33,6 +33,9 @@ using namespace std;
  ** defined for solving the objective function. For simplicity,
  ** all of these pieces are packaged together into the 'model'.
  **/
+
+ #define INFINITY INT_MAX
+
 struct model {
   // Regularization types
   enum reg_types { REG_L2 = 0, REG_MAX };

@@ -20,6 +20,8 @@
  * This is used to construct the feature pyramid.
  */
 
+#define bzero(a, b) memset(a, 0, b);
+
 // struct used for caching interpolation values
 struct alphainfo {
   int si, di;
@@ -45,7 +47,9 @@ void resize1dtran(double *src, int sheight, double *dst, int dheight,
   // we cache the interpolation values since they can be 
   // shared among different columns
   int len = (int)ceil(dheight*invscale) + 2*dheight;
-  alphainfo ofs[len];
+  //alphainfo ofs[len];
+  alphainfo *ofs = new alphainfo[len];
+
   int k = 0;
   for (int dy = 0; dy < dheight; dy++) {
     double fsy1 = dy * invscale;
@@ -86,6 +90,8 @@ void resize1dtran(double *src, int sheight, double *dst, int dheight,
       alphacopy(s, d, ofs, k);
     }
   }
+
+  delete []ofs; ofs = NULL;
 }
 
 // main function
